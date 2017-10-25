@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ImplicitActivity extends AppCompatActivity {
@@ -38,6 +40,13 @@ public class ImplicitActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         apps=pm.queryIntentActivities(intent, 0);
 
+        Collections.sort(apps, new Comparator<ResolveInfo>() {
+            @Override
+            public int compare(ResolveInfo lhs, ResolveInfo rhs) {
+                return lhs.activityInfo.loadLabel(pm).toString().
+                        compareTo(rhs.activityInfo.loadLabel(pm).toString());
+            }
+        });
 
         final ArrayAdapter<ResolveInfo> adapter =
                 new ArrayAdapter<ResolveInfo>(this, R.layout.linear, apps)
